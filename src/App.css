@@ -1,0 +1,88 @@
+/* Add custom styles for delete menu */
+.delete-menu {
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(229, 231, 235, 0.8);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.delete-menu button {
+  transition: all 0.2s ease;
+}
+
+.delete-menu button:hover {
+  background-color: rgba(243, 244, 246, 0.8);
+}
+
+.delete-menu button:active {
+  transform: scale(0.98);
+}
+
+/* Improve message hover effects */
+.chat-bubble {
+  transition: all 0.2s ease;
+}
+
+.chat-bubble:hover {
+  transform: translateY(-1px);
+}
+
+/* Custom scrollbar for messages */
+.messages-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.5);
+  border-radius: 10px;
+}
+
+.messages-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.8);
+}
+
+/* Emoji picker custom styles */
+.emoji-picker-container {
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(229, 231, 235, 0.8);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+}
+
+/* Custom emoji picker theme */
+.emoji-picker-container em-emoji-picker {
+  --background: transparent;
+  --border-color: transparent;
+  --category-emoji-padding: 8px;
+  --category-emoji-size: 1.5rem;
+}
+
+/* Input field focus effects */
+.message-input:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  background-color: #1f2937 !important;
+}
+
+/* Send button animation */
+.send-button {
+  transition: all 0.2s ease;
+}
+
+.send-button:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.send-button:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+/* Emoji button hover effect */
+.emoji-button:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
