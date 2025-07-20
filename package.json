@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "npm install --legacy-peer-deps && npm run build && serve -s dist -l $PORT",
+    "start": "serve -s dist -l $PORT",
     "start:local": "npm run build && serve -s dist -l 3000",
     "lint": "eslint ."
   },
