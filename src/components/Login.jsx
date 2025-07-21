@@ -11,6 +11,7 @@ const Login = () => {
     username: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { authUser } = useSelector(store => store.user);
@@ -24,20 +25,46 @@ const Login = () => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    try {
-      const res = await api.post('/user/login', user);
-      navigate("/");
-      console.log(res);
-      dispatch(setAuthUser(res.data));
-    } catch (error) {
-      toast.error(error.response.data.message);
-      console.log(error);
+    
+    if (!user.username || !user.password) {
+      toast.error("Please fill in all fields");
+      return;
     }
-    setUser({
-      username: "",
-      password: ""
-    })
+
+    setIsLoading(true);
+    
+    try {
+      console.log("Attempting login to:", api.defaults.baseURL);
+      const res = await api.post('/user/login', user);
+      console.log("Login response:", res);
+      
+      if (res.data) {
+        dispatch(setAuthUser(res.data));
+        toast.success("Login successful!");
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      
+      if (error.response) {
+        // Server responded with error
+        toast.error(error.response.data?.message || "Login failed");
+      } else if (error.request) {
+        // Network error
+        toast.error("Network error. Please check your connection.");
+      } else {
+        // Other error
+        toast.error("Login failed. Please try again.");
+      }
+    } finally {
+      setIsLoading(false);
+      setUser({
+        username: "",
+        password: ""
+      });
+    }
   }
+
   return (
     <div className="min-w-96 mx-auto">
       <div className='w-full p-6 rounded-lg shadow-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 border border-gray-100'>
@@ -53,7 +80,9 @@ const Login = () => {
               onChange={(e) => setUser({ ...user, username: e.target.value })}
               className='w-full input input-bordered h-10'
               type="text"
-              placeholder='Username' />
+              placeholder='Username'
+              disabled={isLoading}
+            />
           </div>
           <div>
             <label className='label p-2'>
@@ -64,11 +93,19 @@ const Login = () => {
               onChange={(e) => setUser({ ...user, password: e.target.value })}
               className='w-full input input-bordered h-10'
               type="password"
-              placeholder='Password' />
+              placeholder='Password'
+              disabled={isLoading}
+            />
           </div>
           <p className='text-center my-2'>Don't have an account? <Link to="/register"> signup </Link></p>
           <div>
-            <button type="submit" className='btn btn-block btn-sm mt-2 border border-slate-700'>Login</button>
+            <button 
+              type="submit" 
+              className='btn btn-block btn-sm mt-2 border border-slate-700'
+              disabled={isLoading}
+            >
+              {isLoading ? "Logging in..." : "Login"}
+            </button>
           </div>
         </form>
       </div>
