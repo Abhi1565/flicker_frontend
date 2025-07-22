@@ -39,6 +39,10 @@ const Login = () => {
       console.log("Login response:", res);
       
       if (res.data) {
+        // Store token in localStorage for Authorization header fallback
+        if (res.data.token) {
+          localStorage.setItem('token', res.data.token);
+        }
         dispatch(setAuthUser(res.data));
         toast.success("Login successful!");
         navigate("/");
