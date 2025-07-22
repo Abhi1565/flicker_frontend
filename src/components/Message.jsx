@@ -42,7 +42,10 @@ const Message = ({message}) => {
     const isDeletedForEveryone = message?.deletedForEveryone;
     
     // Check if current user is the sender
-    const isSender = message?.senderId === authUser?._id;
+    // Support both populated and unpopulated senderId
+    const senderId = message?.senderId?._id || message?.senderId;
+    const receiverId = message?.receiverId?._id || message?.receiverId;
+    const isSender = senderId === authUser?._id;
 
     const handleDeleteForMe = async () => {
         if (isDeleting) return;
@@ -96,16 +99,16 @@ const Message = ({message}) => {
     // Show deleted message if deleted for everyone
     if (isDeletedForEveryone) {
         return (
-            <div ref={scroll} className={`chat ${message?.senderId === authUser?._id ? 'chat-end' : 'chat-start'}`}>
+            <div ref={scroll} className={`chat ${isSender ? 'chat-end' : 'chat-start'}`}>
                 <div className="chat-image avatar">
                     <div className="w-10 rounded-full">
-                        <img alt="Tailwind CSS chat bubble component" src={message?.senderId === authUser?._id ? authUser?.profilePhoto  : selectedUser?.profilePhoto } />
+                        <img alt="Tailwind CSS chat bubble component" src={isSender ? authUser?.profilePhoto : (message?.senderId?.profilePhoto || selectedUser?.profilePhoto)} />
                     </div>
                 </div>
                 <div className="chat-header">
                     <time className="text-xs opacity-50 text-white">12:45</time>
                 </div>
-                <div className={`chat-bubble ${message?.senderId !== authUser?._id ? 'bg-gray-200 text-black' : ''} italic opacity-70`}>
+                <div className={`chat-bubble ${!isSender ? 'bg-gray-200 text-black' : ''} italic opacity-70`}>
                     {message?.message}
                 </div>
             </div>
@@ -113,16 +116,16 @@ const Message = ({message}) => {
     }
     
     return (
-        <div ref={scroll} className={`chat ${message?.senderId === authUser?._id ? 'chat-end' : 'chat-start'} relative group`}>
+        <div ref={scroll} className={`chat ${isSender ? 'chat-end' : 'chat-start'} relative group`}>
             <div className="chat-image avatar">
                 <div className="w-10 rounded-full">
-                    <img alt="Tailwind CSS chat bubble component" src={message?.senderId === authUser?._id ? authUser?.profilePhoto  : selectedUser?.profilePhoto } />
+                    <img alt="Tailwind CSS chat bubble component" src={isSender ? authUser?.profilePhoto : (message?.senderId?.profilePhoto || selectedUser?.profilePhoto)} />
                 </div>
             </div>
             <div className="chat-header">
                 <time className="text-xs opacity-50 text-white">12:45</time>
             </div>
-            <div className={`chat-bubble ${message?.senderId !== authUser?._id ? 'bg-gray-200 text-black' : ''} relative`}>
+            <div className={`chat-bubble ${!isSender ? 'bg-gray-200 text-black' : ''} relative`}>
                 {message?.message}
                 
                 {/* Delete menu button - show for all messages */}
