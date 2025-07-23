@@ -31,7 +31,8 @@ function App() {
 
   useEffect(()=>{
     if(authUser){
-     const socketio = io(import.meta.env.VITE_SOCKET_URL || 'https://flicker-backend-is31.onrender.com', {
+     const socketio = io(import.meta.env.VITE_SOCKET_URL, {
+        // withCredentials removed for open CORS
         query:{
           userId:authUser._id
         }
