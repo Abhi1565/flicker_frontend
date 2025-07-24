@@ -6,6 +6,7 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: 10000, // 10 second timeout
+  withCredentials: true, // send cookies/credentials with requests
 });
 
 // Add interceptor to send token in Authorization header if available
